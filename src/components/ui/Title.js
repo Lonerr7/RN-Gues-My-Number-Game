@@ -1,8 +1,8 @@
 import { Text, StyleSheet } from 'react-native';
 import Colors from '../../utils/colors';
 
-const Title = ({ children }) => {
-  return <Text style={styles.title}>{children}</Text>;
+const Title = ({ children, customStyle }) => {
+  return <Text style={[styles.title, customStyle]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
