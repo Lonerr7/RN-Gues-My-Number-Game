@@ -1,4 +1,4 @@
-import {  View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import Title from '../components/ui/Title';
 import { useState, useEffect } from 'react';
 import NumberContainer from '../components/game/NumberContainer';
@@ -57,14 +57,18 @@ const GameScreen = ({ userNumber, onGameOver }) => {
       <Title>Opponent's guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText>Higher or lower?</InstructionText>
-        <View>
-          <PrimaryButton onPress={() => nextGameHandler('lower')}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={() => nextGameHandler('higher')}>
-            +
-          </PrimaryButton>
+        <InstructionText customStyle={styles.instructionText}>Higher or lower?</InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => nextGameHandler('lower')}>
+              -
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => nextGameHandler('higher')}>
+              +
+            </PrimaryButton>
+          </View>
         </View>
       </Card>
     </View>
@@ -75,6 +79,16 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 12,
+  },
+  instructionText: {
+    marginBottom: 24
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  buttonContainer: {
+    flex: 1,
   },
 });
 
