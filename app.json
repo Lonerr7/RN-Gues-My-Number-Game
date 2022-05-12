@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "2GuessMyNumber",
+    "slug": "2GuessMyNumber",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
