@@ -1,10 +1,12 @@
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Text, FlatList } from 'react-native';
 import Title from '../components/ui/Title';
 import { useState, useEffect } from 'react';
 import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
+import { Ionicons } from '@expo/vector-icons';
+import GuessLogItem from '../components/game/GuessLogItem';
 
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -19,13 +21,23 @@ const generateRandomBetween = (min, max, exclude) => {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-const GameScreen = ({ userNumber, onGameOver }) => {
+const GameScreen = ({ userNumber, onGameOver, setGameRounds, roundNumber }) => {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [gameRoundsList, setGameRoundsList] = useState([initialGuess]);
 
   useEffect(() => {
     if (userNumber === currentGuess) onGameOver(true);
+    setGameRounds((prevState) => {
+      console.log(prevState);
+      return prevState + 1;
+    });
   }, [currentGuess]);
+
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
 
   const nextGameHandler = (direction) => {
     if (
@@ -50,6 +62,7 @@ const GameScreen = ({ userNumber, onGameOver }) => {
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGameRoundsList((prevState) => [newRndNumber, ...prevState]);
   };
 
   return (
@@ -57,20 +70,31 @@ const GameScreen = ({ userNumber, onGameOver }) => {
       <Title>Opponent's guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText customStyle={styles.instructionText}>Higher or lower?</InstructionText>
+        <InstructionText customStyle={styles.instructionText}>
+          Higher or lower?
+        </InstructionText>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={() => nextGameHandler('lower')}>
-              -
+              <Ionicons name="md-remove" size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={() => nextGameHandler('higher')}>
-              +
+              <Ionicons name="md-add" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </Card>
+      <View>
+        <FlatList
+          data={gameRoundsList}
+          renderItem={({ item, index }) => (
+            <GuessLogItem roundNumber={gameRoundsList.length - index} guess={item} />
+          )}
+          keyExtractor={(_, index) => index}
+        />
+      </View>
     </View>
   );
 };
@@ -81,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   instructionText: {
-    marginBottom: 24
+    marginBottom: 24,
   },
   buttonsContainer: {
     flexDirection: 'row',

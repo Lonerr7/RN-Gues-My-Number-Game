@@ -70,10 +70,9 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   title: {
-    maxWidth: '65%',
+    maxWidth: '70%',
     marginHorizontal: 'auto',
   },
-  
   numberInput: {
     width: 50,
     height: 50,
